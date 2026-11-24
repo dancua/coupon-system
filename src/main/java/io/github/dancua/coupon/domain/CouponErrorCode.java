@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 쿠폰 도메인 규칙 위반 사유. HTTP 상태 매핑은 api 계층에서 담당한다.
+ * <p>
+ * 이름 규칙: {@code 대상_상황}. 대상은 COUPON(쿠폰 정책) 또는 ISSUED_COUPON(발급된 쿠폰)이다.
+ * 이 이름은 API 응답의 {@code code}로 그대로 노출되므로, 한 번 공개한 뒤에는 바꾸지 않는다.
  */
 @Getter
 @RequiredArgsConstructor
 public enum CouponErrorCode {
 
-	INVALID_COUPON_POLICY("쿠폰 정책이 올바르지 않습니다."),
+	COUPON_POLICY_INVALID("쿠폰 정책이 올바르지 않습니다."),
 	COUPON_NOT_FOUND("쿠폰을 찾을 수 없습니다."),
 	ISSUED_COUPON_NOT_FOUND("발급받은 쿠폰을 찾을 수 없습니다."),
 	COUPON_ALREADY_ISSUED("이미 발급받은 쿠폰입니다."),

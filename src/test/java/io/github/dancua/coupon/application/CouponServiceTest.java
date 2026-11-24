@@ -71,7 +71,7 @@ class CouponServiceTest extends IntegrationTestSupport {
 	void invalidPolicy() {
 		assertCouponError(() -> couponService.createCoupon(new CreateCouponCommand(
 			"잘못된 쿠폰", DiscountType.RATE, 150, 10,
-			NOW, NOW.plusHours(1), NOW.plusDays(1))), CouponErrorCode.INVALID_COUPON_POLICY);
+			NOW, NOW.plusHours(1), NOW.plusDays(1))), CouponErrorCode.COUPON_POLICY_INVALID);
 		assertThat(couponRepository.count()).isZero();
 	}
 

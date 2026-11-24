@@ -45,26 +45,26 @@ class CouponTest {
 		void blankName() {
 			assertCouponError(
 				() -> Coupon.create(" ", DiscountType.FIXED, 3000, 100, ISSUE_START, ISSUE_END, EXPIRES_AT),
-				CouponErrorCode.INVALID_COUPON_POLICY);
+				CouponErrorCode.COUPON_POLICY_INVALID);
 		}
 
 		@Test
 		@DisplayName("총 수량이 0 이하면 실패한다")
 		void nonPositiveQuantity() {
-			assertCouponError(() -> coupon(DiscountType.FIXED, 3000, 0), CouponErrorCode.INVALID_COUPON_POLICY);
+			assertCouponError(() -> coupon(DiscountType.FIXED, 3000, 0), CouponErrorCode.COUPON_POLICY_INVALID);
 		}
 
 		@Test
 		@DisplayName("정액 할인 금액이 0 이하면 실패한다")
 		void nonPositiveFixedAmount() {
-			assertCouponError(() -> coupon(DiscountType.FIXED, 0, 100), CouponErrorCode.INVALID_COUPON_POLICY);
+			assertCouponError(() -> coupon(DiscountType.FIXED, 0, 100), CouponErrorCode.COUPON_POLICY_INVALID);
 		}
 
 		@Test
 		@DisplayName("정률 할인은 1~100% 범위여야 한다")
 		void rateOutOfRange() {
-			assertCouponError(() -> coupon(DiscountType.RATE, 0, 100), CouponErrorCode.INVALID_COUPON_POLICY);
-			assertCouponError(() -> coupon(DiscountType.RATE, 101, 100), CouponErrorCode.INVALID_COUPON_POLICY);
+			assertCouponError(() -> coupon(DiscountType.RATE, 0, 100), CouponErrorCode.COUPON_POLICY_INVALID);
+			assertCouponError(() -> coupon(DiscountType.RATE, 101, 100), CouponErrorCode.COUPON_POLICY_INVALID);
 		}
 
 		@Test
@@ -72,7 +72,7 @@ class CouponTest {
 		void startAfterEnd() {
 			assertCouponError(
 				() -> Coupon.create("쿠폰", DiscountType.FIXED, 3000, 100, ISSUE_END, ISSUE_START, EXPIRES_AT),
-				CouponErrorCode.INVALID_COUPON_POLICY);
+				CouponErrorCode.COUPON_POLICY_INVALID);
 		}
 
 		@Test
@@ -81,7 +81,7 @@ class CouponTest {
 			assertCouponError(
 				() -> Coupon.create("쿠폰", DiscountType.FIXED, 3000, 100, ISSUE_START, ISSUE_END,
 					ISSUE_END.minusMinutes(1)),
-				CouponErrorCode.INVALID_COUPON_POLICY);
+				CouponErrorCode.COUPON_POLICY_INVALID);
 		}
 	}
 

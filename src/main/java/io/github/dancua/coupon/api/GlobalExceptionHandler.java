@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
 	/** enum의 모든 값을 switch로 다루므로, 에러 코드를 추가하면 여기서 컴파일 에러가 나 매핑을 빠뜨리지 않는다. */
 	private static HttpStatus statusOf(CouponErrorCode code) {
 		return switch (code) {
-			case INVALID_COUPON_POLICY -> HttpStatus.BAD_REQUEST;
+			case COUPON_POLICY_INVALID -> HttpStatus.BAD_REQUEST;
 			case COUPON_NOT_FOUND, ISSUED_COUPON_NOT_FOUND -> HttpStatus.NOT_FOUND;
 			case COUPON_ALREADY_ISSUED, COUPON_QUANTITY_EXHAUSTED, COUPON_NOT_IN_ISSUE_PERIOD,
 				COUPON_ALREADY_USED, COUPON_EXPIRED, COUPON_NOT_USED -> HttpStatus.CONFLICT;

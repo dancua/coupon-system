@@ -81,25 +81,25 @@ public class Coupon {
 	private static void validatePolicy(String name, DiscountType discountType, int discountValue,
 		int totalQuantity, LocalDateTime issueStartAt, LocalDateTime issueEndAt, LocalDateTime expiresAt) {
 		if (name == null || name.isBlank()) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "이름은 필수입니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "이름은 필수입니다");
 		}
 		if (discountType == null || issueStartAt == null || issueEndAt == null || expiresAt == null) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "할인 종류와 기간은 필수입니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "할인 종류와 기간은 필수입니다");
 		}
 		if (totalQuantity <= 0) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "총 수량은 1 이상이어야 합니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "총 수량은 1 이상이어야 합니다");
 		}
 		if (discountValue <= 0) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "할인 값은 1 이상이어야 합니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "할인 값은 1 이상이어야 합니다");
 		}
 		if (discountType == DiscountType.RATE && discountValue > MAX_RATE) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "할인율은 100% 이하여야 합니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "할인율은 100% 이하여야 합니다");
 		}
 		if (!issueStartAt.isBefore(issueEndAt)) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "발급 시작은 발급 종료보다 빨라야 합니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "발급 시작은 발급 종료보다 빨라야 합니다");
 		}
 		if (expiresAt.isBefore(issueEndAt)) {
-			throw new CouponException(CouponErrorCode.INVALID_COUPON_POLICY, "사용 만료는 발급 종료 이후여야 합니다");
+			throw new CouponException(CouponErrorCode.COUPON_POLICY_INVALID, "사용 만료는 발급 종료 이후여야 합니다");
 		}
 	}
 
