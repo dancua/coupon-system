@@ -1,0 +1,23 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Java, Gradle Kotlin DSL: 탭 들여쓰기 (Spring Initializr 생성 코드와 같은 스타일)
+[*.{java,kts}]
+indent_style = tab
+indent_size = 4
+
+[*.{yml,yaml,md}]
+indent_style = space
+indent_size = 2
+
+[*.lua]
+indent_style = space
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
