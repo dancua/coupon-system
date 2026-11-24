@@ -3,6 +3,7 @@ package io.github.dancua.coupon.api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import io.github.dancua.coupon.domain.CouponErrorCode;
 import io.github.dancua.coupon.domain.CouponException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -32,6 +34,20 @@ public class GlobalExceptionHandler {
 			.toList();
 		return ResponseEntity.badRequest()
 			.body(new ErrorResponse(INVALID_REQUEST, "요청 값이 올바르지 않습니다.", fieldErrors));
+	}
+
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<ErrorResponse> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
+		return ResponseEntity
+			.status(HttpStatus.METHOD_NOT_ALLOWED)
+			.body(ErrorResponse.of("METHOD_NOT_ALLOWED", "지원하지 않는 HTTP 메서드입니다."));
+	}
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<ErrorResponse> handleNotFound(NoResourceFoundException e ){
+		return ResponseEntity
+			.status(HttpStatus.NOT_FOUND)
+			.body(ErrorResponse.of("RESOURCE_NOT_FOUND", "없는 주소로 리소스를 요청했습니다."));
 	}
 
 	@ExceptionHandler({

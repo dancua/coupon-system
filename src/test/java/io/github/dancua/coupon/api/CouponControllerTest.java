@@ -136,4 +136,20 @@ class CouponControllerTest {
 		mockMvc.perform(post("/api/issued-coupons/10/cancel").header(ApiHeaders.USER_ID, 7))
 			.andExpect(status().isNoContent());
 	}
+
+	@Test
+	@DisplayName("POST만 있는 주소에 GET으로 요청하면 405를 돌려준다")
+	void methodNotAllowed() throws Exception {
+		mockMvc.perform(get("/api/coupons") )
+			.andExpect(status().isMethodNotAllowed())
+			.andExpect(jsonPath("$.code").value("METHOD_NOT_ALLOWED"));
+	}
+
+	@Test
+	@DisplayName("없는 주소로 요청하면 404를 돌려준다.")
+	void getNotPage() throws Exception {
+		mockMvc.perform(get("/api/nothing"))
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$.code").value("RESOURCE_NOT_FOUND"));
+	}
 }
