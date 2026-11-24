@@ -1,0 +1,17 @@
+### 쿠폰 생성
+POST http://localhost:8080/api/coupons
+Content-Type: application/json
+
+{
+  "name": "선착순 3000원 할인",
+  "discountType": "FIXED",
+  "discountValue": 3000,
+  "totalQuantity": 100,
+  "issueStartAt": "2026-11-24T00:00:00",
+  "issueEndAt": "2026-11-30T23:59:59",
+  "expiresAt": "2026-12-31T23:59:59"
+}
+
+### 쿠폰 발급 (숫자 3은 위에서 받은 id로 바꾸기)
+POST http://localhost:8080/api/coupons/3/issue
+X-User-Id: 7
