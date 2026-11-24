@@ -1,5 +1,5 @@
 # 접속 정보는 테스트 컨테이너(@ServiceConnection)가 주입한다.
+# 테이블은 운영과 똑같이 Flyway 마이그레이션으로 만들고, Hibernate는 validate로 엔티티와 맞는지만 검사한다.
 spring:
   jpa:
-    hibernate:
-      ddl-auto: create-drop
+    show-sql: false

@@ -5,6 +5,9 @@ spring:
     default: local
   jpa:
     open-in-view: false
+    hibernate:
+      # 테이블은 Flyway(db/migration)만 만들고 바꾼다. Hibernate는 엔티티와 테이블이 맞는지 검사만 한다.
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -21,9 +24,12 @@ spring:
     username: coupon
     password: coupon
   jpa:
-    hibernate:
-      ddl-auto: update
     show-sql: true
+  flyway:
+    # Flyway 도입 전에 ddl-auto로 만든 로컬 테이블이 이미 있으면, 그 상태를 V1로 간주하고 V2부터 적용한다.
+    # (V1은 그 로컬 테이블 구조와 똑같이 작성했다.) 빈 DB에서는 V1부터 정상적으로 실행된다.
+    baseline-on-migrate: true
+    baseline-version: 1
   data:
     redis:
       host: localhost
