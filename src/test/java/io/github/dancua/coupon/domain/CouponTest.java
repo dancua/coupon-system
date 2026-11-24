@@ -130,6 +130,17 @@ class CouponTest {
 			assertCouponError(() -> coupon.issue(now), CouponErrorCode.COUPON_QUANTITY_EXHAUSTED);
 			assertThat(coupon.getIssuedQuantity()).isEqualTo(2);
 		}
+
+		@Test
+		@DisplayName("발급 가능 검증은 기간 밖이면 실패하고, 기간 안이면 수량을 바꾸지 않고 통과한다")
+		void validateIssuable() {
+			Coupon coupon = coupon(DiscountType.FIXED, 3000, 100);
+
+			assertCouponError(() -> coupon.validateIssuable(ISSUE_END), CouponErrorCode.COUPON_NOT_IN_ISSUE_PERIOD);
+			coupon.validateIssuable(ISSUE_START);
+
+			assertThat(coupon.getIssuedQuantity()).isZero();
+		}
 	}
 
 	@Nested

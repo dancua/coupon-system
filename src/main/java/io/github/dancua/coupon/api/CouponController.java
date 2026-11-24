@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.dancua.coupon.application.CouponIssuer;
 import io.github.dancua.coupon.application.CouponService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class CouponController {
 
 	private final CouponService couponService;
+	private final CouponIssuer couponIssuer;
 
 	@PostMapping
 	public ResponseEntity<IdResponse> create(@Valid @RequestBody CreateCouponRequest request) {
@@ -36,7 +38,7 @@ public class CouponController {
 	@PostMapping("/{couponId}/issue")
 	public ResponseEntity<IdResponse> issue(@PathVariable Long couponId,
 		@RequestHeader(ApiHeaders.USER_ID) Long userId) {
-		Long issuedCouponId = couponService.issue(couponId, userId);
+		Long issuedCouponId = couponIssuer.issue(couponId, userId);
 		return ResponseEntity.created(URI.create("/api/issued-coupons/" + issuedCouponId))
 			.body(new IdResponse(issuedCouponId));
 	}

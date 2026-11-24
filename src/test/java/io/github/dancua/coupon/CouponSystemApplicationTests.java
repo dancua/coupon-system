@@ -1,15 +1,12 @@
 package io.github.dancua.coupon;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class CouponSystemApplicationTests {
+import io.github.dancua.coupon.support.IntegrationTestSupport;
+
+class CouponSystemApplicationTests extends IntegrationTestSupport {
 
 	@Test
 	void contextLoads() {
 	}
-
 }

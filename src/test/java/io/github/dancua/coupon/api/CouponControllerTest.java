@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import io.github.dancua.coupon.application.CouponIssuer;
 import io.github.dancua.coupon.application.CouponService;
 import io.github.dancua.coupon.domain.CouponErrorCode;
 import io.github.dancua.coupon.domain.CouponException;
@@ -30,6 +31,9 @@ class CouponControllerTest {
 
 	@MockitoBean
 	private CouponService couponService;
+
+	@MockitoBean
+	private CouponIssuer couponIssuer;
 
 	@Test
 	@DisplayName("쿠폰 생성 성공 시 201과 Location 헤더를 돌려준다")
@@ -82,7 +86,7 @@ class CouponControllerTest {
 	@Test
 	@DisplayName("발급 성공 시 201과 발급 쿠폰 id를 돌려준다")
 	void issue() throws Exception {
-		given(couponService.issue(1L, 7L)).willReturn(10L);
+		given(couponIssuer.issue(1L, 7L)).willReturn(10L);
 
 		mockMvc.perform(post("/api/coupons/1/issue").header(ApiHeaders.USER_ID, 7))
 			.andExpect(status().isCreated())
@@ -93,7 +97,7 @@ class CouponControllerTest {
 	@Test
 	@DisplayName("수량이 소진되면 409와 에러 코드를 돌려준다")
 	void issueExhausted() throws Exception {
-		given(couponService.issue(1L, 7L))
+		given(couponIssuer.issue(1L, 7L))
 			.willThrow(new CouponException(CouponErrorCode.COUPON_QUANTITY_EXHAUSTED));
 
 		mockMvc.perform(post("/api/coupons/1/issue").header(ApiHeaders.USER_ID, 7))
