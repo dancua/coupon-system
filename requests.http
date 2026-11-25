@@ -3,7 +3,7 @@ POST http://localhost:8080/api/coupons
 Content-Type: application/json
 
 {
-  "name": "선착순 3000원 할인",
+  "name": "SQL확인 DB",
   "discountType": "FIXED",
   "discountValue": 3000,
   "totalQuantity": 100,
@@ -12,6 +12,29 @@ Content-Type: application/json
   "expiresAt": "2026-12-31T23:59:59"
 }
 
-### 쿠폰 발급 (숫자 3은 위에서 받은 id로 바꾸기)
-POST http://localhost:8080/api/coupons/3/issue
+> {% client.global.set("couponId", response.body.id); %}
+
+### 쿠폰 발급 (사용자 7)
+POST http://localhost:8080/api/coupons/{{couponId}}/issue
+X-User-Id: 7
+
+> {% client.global.set("issuedCouponId", response.body.id); %}
+
+### 쿠폰 조회
+GET http://localhost:8080/api/coupons/{{couponId}}
+
+### 같은 사용자로 다시 발급 (409 예상)
+POST http://localhost:8080/api/coupons/{{couponId}}/issue
+X-User-Id: 7
+
+### 쿠폰 목록 확인
+GET http://localhost:8080/api/issued-coupons
+X-User-Id: 7
+
+### 쿠폰 사용 확인
+POST http://localhost:8080/api/issued-coupons/{{issuedCouponId}}/use
+X-User-Id: 7
+
+### 쿠폰 사용 취소
+POST http://localhost:8080/api/issued-coupons/{{issuedCouponId}}/cancel
 X-User-Id: 7
